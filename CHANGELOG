@@ -1,0 +1,78 @@
+*** CHANGELOG ***
+
+* Fixed send/receive to handle integers and floats properly in Lua 5.3. Bug 
+reported by luafox.
+
+[v1.0-4]
+
+* Changed luaproc.newproc to be able to receive a Lua function as an argument.
+Suggested by Mason Bogue.
+
+* Fixed luaproc.newproc to handle binary strings properly. Calling
+luaproc.newproc(string.dump(f)) now works fine. Bug reported by Mason Bogue.
+
+* Minor Makefile improvements.
+
+* Documentation (README) format improvements.
+
+* Created an ISSUES file to describe known issues.
+
+* Fixed standard library load in Lua processes in Lua 5.3 to include the UTF8
+library.
+
+* Fixed luaproc library load function (luaopen_luaproc) to prevent problems when
+require'ing luaproc from within a Lua process. Although it is not necessary to
+require luaproc from within Lua processes, doing so would cause a deadlock.
+
+[v1.0-3]
+
+* Fixed standard library load in new Lua processes. In Lua 5.2 the bit32
+standard library must also be loaded. In Lua 5.2 and 5.3 the coroutine
+standard library must also be loaded.
+
+[v1.0-2]
+
+* Added macros for compatibility with Lua 5.2 and 5.3.
+
+* Removed global name registration in parent when loading luaproc.
+
+[v1.0-1]
+
+* Major code revision by Pablo Musa:
+  - Internal data structures are now stored in Lua tables, removing the need
+    for memory management in C;
+  - Messages can contain strings, numbers, booleans and nil;
+  - Improved error handling in Lua processes;
+  - Functions luaproc.createworker and luaproc.destroyworker replaced by 
+    function luaproc.setnumworkers;
+  - Added function luaproc.getnumworkers;
+  - Code clean-up.
+
+* Added support to send and receive messages to/from main Lua script, which
+  also resulted in a unified API for both the main (parent) Lua script and the
+  child Lua processes (created with luaproc.newproc).
+
+* Removed function luaproc.exit.
+
+* Added function luaproc.wait, which waits until all Lua processes have
+  finished executing and can be used for synchronization. Unlike luaproc.exit,
+  which had to be the last function to be called, luaproc.wait can be called at
+  any point in a script. It is always implicitly called when the main Lua
+  script finishes executing.
+
+* Fixed a race condition that was trigged by the main Lua script exiting while
+  luaproc workers were active. When Lua unloads dynamic libraries with 
+  dlclose() while it is exiting, pthreads is unloaded while workers are still 
+  active, causing a segmentation fault. Workers (pthreads) are now joined, via
+  a finalizer, when luaproc is unloaded.
+
+* Fixed a race condition when creating new Lua processes with recycling.
+
+* Fixed include guard conflict in sched.h (now lpsched.h).
+
+* Included release in LuaRocks.
+
+[v1.0b1]
+
+* First public beta release.
+
