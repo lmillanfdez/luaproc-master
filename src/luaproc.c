@@ -507,7 +507,7 @@ static int luaproc_buff_writer( lua_State *L, const void *buff, size_t size,
  ***********************/
 
 /* 
-it transfer userdata between Lua states
+it transfers userdata between Lua states
 
 params:
 
@@ -518,7 +518,8 @@ type_	: kind of message transfer
 
 return values:
 
-TRUE in succesfully transfers; otherwise, FALSE plus error messages
+TRUE 						:in succesfully transfers
+FALSE plus error messages	:otherwise
 */
 static int transferUdata(lua_State *Lfrom, int i, lua_State *Lto, enum t_transfer type_){
 	
@@ -882,7 +883,7 @@ static int transferUdata(lua_State *Lfrom, int i, lua_State *Lto, enum t_transfe
 }
 
 /* 
-it transfer tables between Lua states
+it transfers tables between Lua states
 
 params:
 
@@ -894,7 +895,8 @@ lv:		: deep level in recursive calls
 
 return values:
 
-TRUE in succesfully transfers; otherwise, FALSE plus error messages
+TRUE 						: in succesfully transfers
+FALSE plus error messages	: otherwise
 */
 
 static int transferTable(lua_State *Lfrom, int index, lua_State *Lto, enum t_transfer type_, int lv){
